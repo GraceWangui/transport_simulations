@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Simulations</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Mode</th>
+      <th>Baseline</th>
+      <th>Created</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in sims %}
+      <tr>
+        <td>{{ s.title }}</td>
+        <td>{{ s.description|default:"—" }}</td>
+        <td>{{ s.get_mode_display }}</td>
+        <td>{{ s.is_baseline|yesno:"Yes,No" }}</td>
+        <td>{{ s.created_at|date:"Y-m-d H:i" }}</td>
+        <td><a class="btn" href="{% url 'simulation_detail' s.id %}">View</a></td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="6">No simulations yet — add some in <a href="/admin/">admin</a>.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
