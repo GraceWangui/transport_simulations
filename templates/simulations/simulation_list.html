@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>Simulations</h2>
+<p><a class="btn" href="{% url 'simulation_create' %}">New Simulation</a></p>
 
 <table>
   <thead>
@@ -9,6 +10,7 @@
       <th>Description</th>
       <th>Mode</th>
       <th>Baseline</th>
+      <th>Author</th>
       <th>Created</th>
       <th></th>
     </tr>
@@ -20,8 +22,13 @@
         <td>{{ s.description|default:"—" }}</td>
         <td>{{ s.get_mode_display }}</td>
         <td>{{ s.is_baseline|yesno:"Yes,No" }}</td>
+        <td>{{ s.author|default:"—" }}</td>
         <td>{{ s.created_at|date:"Y-m-d H:i" }}</td>
-        <td><a class="btn" href="{% url 'simulation_detail' s.id %}">View</a></td>
+
+        <td>
+          <a class="btn" href="{% url 'simulation_detail' s.id %}">View</a>
+          <a class="btn" href="{% url 'simulation_update' s.id %}">Edit</a>
+        </td>
       </tr>
     {% empty %}
       <tr>

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Delete Run</h2>
+<p>Are you sure you want to delete <strong>{{ run.label }}</strong> (CO₂ {{ run.co2_emissions }} t)?</p>
+<form method="post">
+  {% csrf_token %}
+  <button class="btn" type="submit">Yes, delete</button>
+  <a class="btn" href="{% url 'simulation_detail' run.simulation_id %}">Cancel</a>
+</form>
+{% endblock %}

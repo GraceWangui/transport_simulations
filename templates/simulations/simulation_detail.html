@@ -4,23 +4,38 @@
 <p>
   <strong>Mode:</strong> {{ sim.get_mode_display }}<br>
   <strong>Baseline:</strong> {{ sim.is_baseline|yesno:"Yes,No" }}<br>
+  <strong>Author:</strong> {{ sim.author|default:"—" }}<br>
   <strong>Created:</strong> {{ sim.created_at|date:"Y-m-d H:i" }}
 </p>
 
 <h3>Runs</h3>
+<p>
+  <a class="btn" href="{% url 'run_create_for_sim' sim.id %}">Add Run</a>
+  <a class="btn" href="{% url 'simulation_update' sim.id %}">Edit Simulation</a>
+
+</p>
 <table>
-  <thead><tr><th>Label</th><th>Commit</th><th>CO₂ (t)</th><th>Created</th></tr></thead>
+  <thead><tr><th>Label</th><th>Commit</th><th>CO₂ (t)<th>Author</th>
+  </th><th>Created</th></tr></thead>
   <tbody>
     {% for r in runs %}
       <tr>
         <td>{{ r.label }}</td>
         <td><code>{{ r.git_commit }}</code></td>
         <td>{{ r.co2_emissions }}</td>
+        <td>{{ r.author|default:"—" }}</td>
         <td>{{ r.created_at|date:"Y-m-d H:i" }}</td>
+        <td>
+          <a class="btn" href="{% url 'run_update' r.id %}">Edit</a>
+          <a class="btn" href="{% url 'run_delete' r.id %}">Delete</a>
+        </td>
       </tr>
     {% empty %}
       <tr><td colspan="4">No runs yet for this simulation.</td></tr>
     {% endfor %}
   </tbody>
 </table>
+<p>
+  <a class="btn" href="{% url 'simulation_list' %}">← Back to Simulations</a>
+</p>
 {% endblock %}

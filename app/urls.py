@@ -19,6 +19,7 @@ from django.urls import path , include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("accounts/", include("django.contrib.auth.urls")),  # login/logout/password views
     path('', include('simulations.urls')), # Include URLs from the simulations app
 
 ]

@@ -15,5 +15,63 @@
   <body>
     <h1>Transport Simulations</h1>
     {% block content %}{% endblock %}
+    <nav style="margin-bottom:1rem;">
+  {% if request.user.is_authenticated %}
+    <span>Signed in as <strong>{{ request.user.username }}</strong></span>
+    <a class="btn" href="{% url 'logout' %}">Logout</a>
+  {% else %}
+    <a class="btn" href="{% url 'login' %}">Login</a>
+    <a class="btn btn-secondary" href="{% url 'register' %}">Register</a>
+  {% endif %}
+    </nav>
+
   </body>
 </html>
+
+<style>
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    margin: 2rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background: #f6f6f6;
+  }
+
+  /* buttons */
+  .btn {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    margin: 0 0.2rem;
+    border: none;
+    border-radius: 6px;
+    background-color: #494978;   /* nice indigo */
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .btn:hover {
+    background-color: #9a9aaa;
+  }
+
+  /* secondary button (e.g. cancel) */
+  .btn-secondary {
+    background-color: #e5e7eb;  /* light gray */
+    color: #111827;
+  }
+  .btn-secondary:hover {
+    background-color: #d1d5db;
+  }
+</style>
+

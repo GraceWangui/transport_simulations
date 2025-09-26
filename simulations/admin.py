@@ -12,6 +12,6 @@ class SimulationAdmin(admin.ModelAdmin):
 
 @admin.register(Run)
 class RunAdmin(admin.ModelAdmin):
-    list_display = ("label", "simulation", "metric_name", "metric_value", "created_at")
-    list_filter = ("metric_name", "created_at", "simulation")
+    list_display = ("label", "simulation", "co2_emissions",  "created_at")
+    list_filter = ("co2_emissions", "created_at", "simulation")
     search_fields = ("label", "git_commit")

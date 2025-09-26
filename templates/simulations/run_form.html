@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ action }} Run</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn" type="submit">{{ action }}</button>
+
+  {% if form.instance.pk %}
+    <a class="btn btn-secondary" href="{% url 'simulation_detail' form.instance.simulation.pk %}">Cancel</a>
+  {% elif form.initial.simulation %}
+    <a class="btn btn-secondary" href="{% url 'simulation_detail' form.initial.simulation.pk %}">Cancel</a>
+  {% else %}
+    <a class="btn btn-secondary" href="{% url 'simulation_list' %}">Cancel</a>
+  {% endif %}
+</form>
+{% endblock %}
