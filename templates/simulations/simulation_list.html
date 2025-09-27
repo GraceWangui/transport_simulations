@@ -22,7 +22,7 @@
         <td>{{ s.description|default:"—" }}</td>
         <td>{{ s.get_mode_display }}</td>
         <td>{{ s.is_baseline|yesno:"Yes,No" }}</td>
-        <td>{{ s.author|default:"—" }}</td>
+        <td>{{ s.author.username|default:"—" }}</td>
         <td>{{ s.created_at|date:"Y-m-d H:i" }}</td>
         <td class="actions">
         <div class="btn-group">

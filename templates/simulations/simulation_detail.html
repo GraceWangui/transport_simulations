@@ -4,7 +4,7 @@
 <p>
   <strong>Mode:</strong> {{ sim.get_mode_display }}<br>
   <strong>Baseline:</strong> {{ sim.is_baseline|yesno:"Yes,No" }}<br>
-  <strong>Author:</strong> {{ sim.author|default:"—" }}<br>
+  <strong>Author:</strong> {{ sim.author.username|default:"—" }}<br>
   <strong>Created:</strong> {{ sim.created_at|date:"Y-m-d H:i" }}
 </p>
 

@@ -2,6 +2,10 @@ from django.urls import path
 from . import views
 from . import auth_views as authv
 
+# Import Django's path function for URL routing
+# Import views from the current package for handling requests
+# Import authentication-related views as 'authv' for user management
+
 urlpatterns = [
     path("", views.home, name="home"), # landing page
     path("simulations/", views.simulation_list, name="simulation_list"),

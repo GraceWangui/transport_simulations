@@ -3,6 +3,13 @@ from simulations.forms import SimulationForm, RunForm
 from .models import Simulation, Run
 from django.contrib.auth.decorators import login_required
 
+# Import necessary Django shortcuts and decorators for view logic.
+# - render: Renders templates with context.
+# - get_object_or_404: Fetches objects or returns 404 if not found.
+# - redirect: Redirects to another view.
+# Import forms for Simulation and Run creation/update.
+# Import Simulation and Run models for database operations.
+# Import login_required to restrict views to authenticated users.
 # Create your views here.
 
 def home(request):
@@ -34,18 +41,37 @@ def simulation_create(request):
     if request.method == "POST":
         form = SimulationForm(request.POST)
         if form.is_valid():
-            form.save()
+            sim = form.save(commit=False)
+            sim.author = request.user  # set author
+            sim.save()
             return redirect("simulation_list")
     else:
         form = SimulationForm()
     return render(request, "simulations/simulation_form.html", {"form": form, "action": "Create"})
 
 @login_required
+def simulation_update(request, pk):
+    sim = get_object_or_404(Simulation, pk=pk)
+    if request.method == "POST":
+        form = SimulationForm(request.POST, instance=sim)
+        if form.is_valid():
+            sim = form.save(commit=False)
+            if sim.author_id is None:
+                sim.author = request.user  # preserve existing, set if missing
+            sim.save()
+            return redirect("simulation_detail", pk=sim.pk)
+    else:
+        form = SimulationForm(instance=sim)
+    return render(request, "simulations/simulation_form.html", {"form": form, "action": "Update"})
+
+@login_required
 def run_create(request, simulation_id=None):
     if request.method == "POST":
         form = RunForm(request.POST)
         if form.is_valid():
-            run = form.save()
+            run = form.save(commit=False)
+            run.author = request.user  # set author
+            run.save()
             return redirect("simulation_detail", pk=run.simulation_id)
     else:
         initial = {}
@@ -54,17 +80,7 @@ def run_create(request, simulation_id=None):
         form = RunForm(initial=initial)
     return render(request, "simulations/run_form.html", {"form": form, "action": "Create"})
 
-@login_required
-def simulation_update(request, pk):
-    sim = get_object_or_404(Simulation, pk=pk)
-    if request.method == "POST":
-        form = SimulationForm(request.POST, instance=sim)
-        if form.is_valid():
-            form.save()
-            return redirect("simulation_detail", pk=sim.pk)
-    else:
-        form = SimulationForm(instance=sim)
-    return render(request, "simulations/simulation_form.html", {"form": form, "action": "Update"})
+
 
 @login_required
 def run_update(request, pk):
@@ -72,7 +88,10 @@ def run_update(request, pk):
     if request.method == "POST":
         form = RunForm(request.POST, instance=run)
         if form.is_valid():
-            run = form.save()
+            run = form.save(commit=False)
+            if run.author_id is None:
+                run.author = request.user  # preserve existing, set if missing
+            run.save()
             return redirect("simulation_detail", pk=run.simulation_id)
     else:
         form = RunForm(instance=run)
