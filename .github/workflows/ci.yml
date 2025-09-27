@@ -1,0 +1,25 @@
+name: CI (Docker build & tests)
+
+on:
+  push:
+    branches: [ main, master, feature/** ]
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -t transport-simulations:${{ github.run_id }} .
+
+      - name: Run Django tests in container
+        run: |
+          docker run --rm \
+            -e DJANGO_SETTINGS_MODULE=app.settings \
+            -e SECRET_KEY=ci-secret \
+            -e DEBUG=1 \
+            transport-simulations:${{ github.run_id }} \
+            python manage.py test -v 2
