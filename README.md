@@ -1,4 +1,4 @@
-````markdown
+
 # Transport Simulations
 
 A minimal Django web application for managing **transport research simulations** and their **runs**.  
