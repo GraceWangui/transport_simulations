@@ -1,0 +1,45 @@
+# Build the Docker image and run Django tests (no deploy, no registry)
+
+trigger:
+  branches:
+    include:
+      - main
+      - master
+      - feature/*
+
+pool:
+  vmImage: ubuntu-latest  # Free Microsoft-hosted agent
+
+variables:
+  # A simple name for the Docker image on the build agent
+  imageName: transport-simulations
+  # Azure Pipelines automatically gives each run a unique BuildId number.
+  # We use it as the Docker tag so each run is unique (e.g., :143).
+  imageTag: $(Build.BuildId)
+
+steps:
+- checkout: self
+
+# Build the Docker image from your repo's Dockerfile
+- task: Docker@2
+  displayName: Build Docker image
+  inputs:
+    command: build
+    repository: $(imageName)
+    Dockerfile: Dockerfile
+    tags: |
+      $(imageTag)
+
+# Run tests inside the container we just built
+- script: |
+    echo "Listing images to confirm build:"
+    docker images | head
+
+    echo "Running Django tests in the container..."
+    docker run --rm \
+      -e DJANGO_SETTINGS_MODULE=app.settings \
+      -e SECRET_KEY=ci-secret \
+      -e DEBUG=1 \
+      $(imageName):$(imageTag) \
+      python manage.py test -v 2
+  displayName: Run Django tests in container
