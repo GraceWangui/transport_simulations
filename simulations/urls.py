@@ -3,7 +3,8 @@ from . import views
 from . import auth_views as authv
 
 urlpatterns = [
-    path("", views.simulation_list, name="simulation_list"),
+    path("", views.home, name="home"), # landing page
+    path("simulations/", views.simulation_list, name="simulation_list"),
     path("simulations/<int:pk>/", views.simulation_detail, name="simulation_detail"),
     path("simulations/new/", views.simulation_create, name="simulation_create"),  
     path("simulations/<int:pk>/edit/", views.simulation_update, name="simulation_update"),
@@ -15,6 +16,8 @@ urlpatterns = [
     path("runs/<int:pk>/delete/", views.run_delete, name="run_delete"),
 
     path("accounts/register/", authv.register, name="register"),
+    path("profile/", views.profile, name="profile"),
+    path("settings/", views.settings_page, name="settings"),
 
 
 ]

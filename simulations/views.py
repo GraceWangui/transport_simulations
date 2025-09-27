@@ -5,6 +5,19 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+def home(request):
+    return render(request, "home.html")
+
+@login_required
+def profile(request):
+    # Use a simple dummy avatar (initials) via inline SVG
+    initials = (request.user.get_full_name() or request.user.username)[:2].upper()
+    return render(request, "profile.html", {"initials": initials})
+
+@login_required
+def settings_page(request):
+    return render(request, "settings.html")
+
 @login_required
 def simulation_list(request):
     sims = Simulation.objects.all()

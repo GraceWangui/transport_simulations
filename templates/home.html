@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section style="max-width:920px;margin:2rem auto;padding:2rem;border-radius:16px;background:#f8fafc;">
+  <h2 style="margin:0 0 .5rem 0;font-size:2rem;">Transport Experiment Registry</h2>
+  <p style="margin:0;color:#475569;">
+    A minimal research app to manage <strong>Simulations</strong> and their <strong>Runs</strong>, with
+    provenance (git commits) and a primary metric (CO₂). Built to demonstrate research software
+    engineering best practices: reproducibility, documentation, auth, and clean UI.
+  </p>
+
+  {% if request.user.is_authenticated %}
+    <div style="margin-top:1.25rem;">
+      <a class="btn" href="{% url 'simulation_list' %}">Go to your simulations</a>
+      <a class="btn btn-secondary" href="{% url 'simulation_create' %}">New simulation</a>
+    </div>
+  {% else %}
+    <div style="margin-top:1.25rem;">
+      <button id="getStarted" class="btn btn-accent" type="button">Get started</button>
+      <div id="cta" style="display:none;margin-top:.75rem;">
+        <a class="btn" href="{% url 'register' %}">Register</a>
+        <a class="btn btn-secondary" href="{% url 'login' %}">Login</a>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+<section style="max-width:920px;margin:1rem auto;display:grid;gap:1rem;
+                grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+  <div style="padding:1rem;border:1px solid #e5e7eb;border-radius:12px;background:#fff;">
+    <h3 style="margin:.2rem 0;">Reproducible</h3>
+    <p style="margin:0;color:#6b7280;">Record git commit + author on each run; keep results traceable.</p>
+  </div>
+  <div style="padding:1rem;border:1px solid #e5e7eb;border-radius:12px;background:#fff;">
+    <h3 style="margin:.2rem 0;">Simple</h3>
+    <p style="margin:0;color:#6b7280;">Just Simulations and Runs with a single key metric (CO₂).</p>
+  </div>
+  <div style="padding:1rem;border:1px solid #e5e7eb;border-radius:12px;background:#fff;">
+    <h3 style="margin:.2rem 0;">Collaboration-ready</h3>
+    <p style="margin:0;color:#6b7280;">Auth, authorship, and a clean UI for teams to share results.</p>
+  </div>
+</section>
+
+<script>
+  const btn = document.getElementById('getStarted');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      const cta = document.getElementById('cta');
+      if (cta) cta.style.display = (cta.style.display === 'none' || !cta.style.display) ? 'block' : 'none';
+    });
+  }
+</script>
+
+{% endblock %}

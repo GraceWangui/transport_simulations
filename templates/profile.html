@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Your Profile</h2>
+<div style="display:flex;align-items:center;gap:1rem;margin-top:1rem;">
+  <div style="width:64px;height:64px;border-radius:50%;background:#e5e7eb;
+              display:flex;align-items:center;justify-content:center;font-weight:700;">
+    {{ initials }}
+  </div>
+  <div>
+    <div><strong>Username:</strong> {{ request.user.username }}</div>
+    <div><strong>Email:</strong> {{ request.user.email|default:"—" }}</div>
+  </div>
+</div>
+
+<h3 style="margin-top:1.5rem;">Bio</h3>
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae elit a
+  arcu auctor posuere. Praesent a sapien a nibh dignissim gravida.
+</p>
+
+<p style="margin-top:1.5rem;">
+  <a class="btn btn-secondary" href="{% url 'simulation_list' %}">← Back to Simulations</a>
+</p>
+{% endblock %}

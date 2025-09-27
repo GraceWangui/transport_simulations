@@ -25,9 +25,11 @@
         <td>{{ r.co2_emissions }}</td>
         <td>{{ r.author|default:"—" }}</td>
         <td>{{ r.created_at|date:"Y-m-d H:i" }}</td>
-        <td>
-          <a class="btn" href="{% url 'run_update' r.id %}">Edit</a>
-          <a class="btn" href="{% url 'run_delete' r.id %}">Delete</a>
+        <td class="actions">
+          <div class="btn-group">
+            <a class="btn btn-sm" href="{% url 'run_update' r.id %}">Edit</a>
+            <a class="btn btn-sm btn-secondary" href="{% url 'run_delete' r.id %}">Delete</a>
+          </div>
         </td>
       </tr>
     {% empty %}

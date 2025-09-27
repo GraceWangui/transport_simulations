@@ -1,77 +1,155 @@
+{% load static %}
 <!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Transport Simulations</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      body { font-family: system-ui, -apple-system, sans-serif; margin: 2rem; }
-      .btn { padding: .4rem .7rem; border: 1px solid #333; border-radius: 6px; text-decoration: none; }
-      table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-      th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-      th { background: #f6f6f6; }
-    </style>
-  </head>
-  <body>
-    <h1>Transport Simulations</h1>
-    {% block content %}{% endblock %}
-    <nav style="margin-bottom:1rem;">
-  {% if request.user.is_authenticated %}
-    <span>Signed in as <strong>{{ request.user.username }}</strong></span>
-    <a class="btn" href="{% url 'logout' %}">Logout</a>
-  {% else %}
-    <a class="btn" href="{% url 'login' %}">Login</a>
-    <a class="btn btn-secondary" href="{% url 'register' %}">Register</a>
-  {% endif %}
-    </nav>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Transport Simulations</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  </body>
+  <style>
+    :root{
+      --nav-bg: linear-gradient(90deg, #0379a0 0%, #000e5a 100%);/* strong blue */
+      --nav-text:#ffffff;
+
+      --primary:#163E8E;
+      --primary-hover:#0F2F70;
+      --secondary-bg:#E6F6FB;
+      --secondary-bg-hover:#D6EFF7;
+      --text:#111827;
+
+      --card: rgba(255,255,255,0.94);
+      --card-border: rgba(12,36,70,.08);
+    }
+
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, sans-serif;
+      min-height:100vh;
+      color:var(--text);
+      background-image:
+        linear-gradient(rgba(0,0,0,.18), rgba(0,0,0,.18)),
+        url("{% static 'img/123.jpg' %}");
+      background-size:cover;
+      background-position:center;
+      background-attachment:fixed;
+    }
+
+    .container{max-width:1040px;margin:0 auto;padding:0 1rem;}
+
+    header{
+      padding:.7rem 0;
+      background: var(--nav-bg);
+      color:var(--nav-text);
+      box-shadow:0 2px 6px rgba(0,0,0,.15);
+    }
+
+    header h1{
+      margin:0;
+      font-weight:800;
+      letter-spacing:.2px;
+      text-align:center;
+    }
+
+    header .sub{
+      font-size:.9rem;
+      color:rgba(255,255,255,.85);
+      text-align:center;
+    }
+
+    .nav{display:flex;align-items:center;gap:.5rem;}
+    .chip{
+      padding:.42rem .8rem;
+      border-radius:9999px;
+      background:rgba(255,255,255,.2);
+      color:var(--nav-text);
+      text-decoration:none;
+      font-weight:600;
+      border:none;
+    }
+    .chip:hover{background:rgba(255,255,255,.3);}
+
+    .page-card{
+      background:var(--card);
+      border:1px solid var(--card-border);
+      border-radius:18px;
+      padding:1.25rem;
+      box-shadow:0 14px 28px rgba(11,30,59,.1);
+      margin:1.25rem 0 2rem;
+    }
+
+    /* Buttons */
+    .btn{
+      display:inline-block; padding:.38rem .75rem; border:none; border-radius:10px;
+      background:var(--primary); color:#fff; text-decoration:none; font-weight:700; cursor:pointer;
+      transition:background .12s ease, transform .06s ease;
+      vertical-align:middle; line-height:1;
+    }
+    .btn:hover{ background:var(--primary-hover); transform:translateY(-1px); }
+
+    .btn-secondary{ background:var(--secondary-bg); color:var(--text); }
+    .btn-secondary:hover{ background:var(--secondary-bg-hover); }
+
+    .btn-sm{ padding:.32rem .6rem; border-radius:9999px; font-weight:600; font-size:.85rem; }
+
+    /* Table tweaks */
+    table{width:100%;border-collapse:collapse;margin-top:1rem;}
+    th,td{border:1px solid #E5E7EB;padding:10px;text-align:left;}
+    th{background:#2E6EB5;color:var(--nav-text);}
+    td{vertical-align:middle;}
+
+    .actions{ min-width: 130px; }
+    .btn-group{ display:flex; gap:.4rem; align-items:center; flex-wrap:nowrap; }
+
+    /* Navbar layout: three zones */
+    .navbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .navbar-left{flex:1; display:flex; justify-content:flex-start;}
+    .navbar-center{flex:1; text-align:center;}
+    .navbar-right{flex:1; display:flex; justify-content:flex-end;}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container navbar">
+      <!-- Far left -->
+      <div class="navbar-left">
+        <a class="chip" href="{% url 'home' %}">Home</a>
+      </div>
+
+      <!-- Center -->
+      <div class="navbar-center">
+        <h1>Transport Simulations</h1>
+        {% if request.user.is_authenticated %}
+          <div class="sub">Welcome, <strong>{{ request.user.get_username }}</strong> 👋</div>
+        {% else %}
+          <div class="sub">Welcome, guest</div>
+        {% endif %}
+      </div>
+
+      <!-- Far right -->
+      <div class="navbar-right nav">
+        {% if request.user.is_authenticated %}
+          <a class="chip" href="{% url 'profile' %}">Profile</a>
+          <a class="chip" href="{% url 'settings' %}">Settings</a>
+          <form method="post" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button class="chip" type="submit">Logout</button>
+          </form>
+        {% else %}
+          <a class="chip" href="{% url 'login' %}">Login</a>
+          <a class="chip" href="{% url 'register' %}">Register</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-card">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+</body>
 </html>
-
-<style>
-  body {
-    font-family: system-ui, -apple-system, sans-serif;
-    margin: 2rem;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-  }
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  th {
-    background: #f6f6f6;
-  }
-
-  /* buttons */
-  .btn {
-    display: inline-block;
-    padding: 0.35rem 0.75rem;
-    margin: 0 0.2rem;
-    border: none;
-    border-radius: 6px;
-    background-color: #494978;   /* nice indigo */
-    color: white;
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  .btn:hover {
-    background-color: #9a9aaa;
-  }
-
-  /* secondary button (e.g. cancel) */
-  .btn-secondary {
-    background-color: #e5e7eb;  /* light gray */
-    color: #111827;
-  }
-  .btn-secondary:hover {
-    background-color: #d1d5db;
-  }
-</style>
-

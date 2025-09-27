@@ -24,10 +24,11 @@
         <td>{{ s.is_baseline|yesno:"Yes,No" }}</td>
         <td>{{ s.author|default:"—" }}</td>
         <td>{{ s.created_at|date:"Y-m-d H:i" }}</td>
-
-        <td>
-          <a class="btn" href="{% url 'simulation_detail' s.id %}">View</a>
-          <a class="btn" href="{% url 'simulation_update' s.id %}">Edit</a>
+        <td class="actions">
+        <div class="btn-group">
+          <a class="btn btn-sm" href="{% url 'simulation_detail' s.id %}">View</a>
+          <a class="btn btn-sm btn-secondary" href="{% url 'simulation_update' s.id %}">Edit</a>
+        </div>
         </td>
       </tr>
     {% empty %}
