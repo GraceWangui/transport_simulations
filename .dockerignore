@@ -1,0 +1,20 @@
+# python
+__pycache__/
+*.py[cod]
+*.pyc
+
+# venv & tooling
+.venv/
+.env
+.env.*
+
+# django
+db.sqlite3
+
+# node / misc
+node_modules/
+
+# vcs / os
+.git
+.gitignore
+.DS_Store

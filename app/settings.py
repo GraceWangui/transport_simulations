@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,8 +25,17 @@ SECRET_KEY = 'django-insecure-5#^e)2uz4_uqro25wb%1w(p37y-3ggw=qlwk8p^euz^qx#b6uc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+_raw_hosts = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost,0.0.0.0").strip()
+if _raw_hosts in {"*", "'*'", '"*"'}:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = [h.split(":")[0].strip() for h in _raw_hosts.split(",") if h.strip()]
 
+# Optional but helpful for POSTs/forms while in Docker
+_raw_csrf = os.getenv("CSRF_TRUSTED_ORIGINS", "")
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in _raw_csrf.split(",") if o.strip()]
+
+print("DEBUG:", DEBUG, "ALLOWED_HOSTS:", ALLOWED_HOSTS, "CSRF_TRUSTED_ORIGINS:", CSRF_TRUSTED_ORIGINS)
 
 # Application definition
 

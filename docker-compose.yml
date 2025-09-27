@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: transport-simulations:dev
+    container_name: transport-web
+    ports:
+      - "8000:8000"
+    environment:
+      DEBUG: "1"
+      DJANGO_SETTINGS_MODULE: "app.settings"
+      ALLOWED_HOSTS: "0.0.0.0,127.0.0.1,localhost"
+      CSRF_TRUSTED_ORIGINS: "http://0.0.0.0:8000,http://127.0.0.1:8000,http://localhost:8000"
+      SECRET_KEY: "django-insecure-5#^e)2uz4_uqro25wb%1w(p37y-3ggw=qlwk8p^euz^qx#b6uc"
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+    # depends_on: []  # later: postgres
+
+volumes:
+  static_volume:
