@@ -2,7 +2,7 @@
 # Transport Simulations
 
 A minimal Django web application for managing **transport research simulations** and their **runs**.  
-Built to practice **research software engineering best practices**: reproducibility, authorship, and clean deployment (Django + Docker + Pipelines).
+Built to practice **research software engineering best practices**: reproducibility, authorship, and clean deployment (Django + Docker + Azure Pipelines).
 
 ---
 
