@@ -18,8 +18,9 @@ jobs:
       - name: Run Django tests in container
         run: |
           docker run --rm \
+            --entrypoint python \
             -e DJANGO_SETTINGS_MODULE=app.settings \
             -e SECRET_KEY=ci-secret \
-            -e DEBUG=1 \
+            -e DEBUG=0 \
             transport-simulations:${{ github.run_id }} \
-            python manage.py test -v 2
+            manage.py test -v 2

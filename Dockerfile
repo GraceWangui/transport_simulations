@@ -41,3 +41,5 @@ ENV DJANGO_SETTINGS_MODULE=app.settings \
     ALLOWED_HOSTS="*" \
     PORT=8000
 ENTRYPOINT ["/entrypoint.sh"]
+CMD ["gunicorn", "app.wsgi:application", "--bind", "0.0.0.0:8000"]
+
